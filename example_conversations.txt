@@ -1,0 +1,136 @@
+================================================================================
+EXAMPLE CONVERSATIONS: Rule-Based vs LLM-Powered Chatbots
+================================================================================
+
+═══════════════════════════════════════════════════════════════════════════════
+CONVERSATION 1: Simple FAQ Question
+═══════════════════════════════════════════════════════════════════════════════
+
+RULE-BASED CHATBOT:
+────────────────────────────────────────────────────────────────────────────────
+You: What are your hours?
+Bot: We're open Mon-Fri 9am-6pm EST, Sat 10am-4pm EST. Closed Sundays.
+
+You: Are you open on Saturday?
+Bot: We're open Mon-Fri 9am-6pm EST, Sat 10am-4pm EST. Closed Sundays.
+
+You: What time do you close on weekdays?
+Bot: I'm not sure about that. Try asking about: hours, pricing, shipping, returns, or password reset.
+     ↑ FAILS: Couldn't match "close" + "weekday" to FAQ keyword
+
+
+LLM-POWERED CHATBOT:
+────────────────────────────────────────────────────────────────────────────────
+You: What are your hours?
+Bot: We're open Monday through Friday from 9am to 6pm EST, and on Saturdays from 10am to 4pm EST. We're closed on Sundays.
+
+You: Are you open on Saturday?
+Bot: Yes, we're open on Saturday from 10am to 4pm EST.
+
+You: What time do you close on weekdays?
+Bot: We close at 6pm EST on weekdays (Monday through Friday).
+     ↑ SUCCEEDS: Understood "close" + "weekday" naturally
+
+
+═══════════════════════════════════════════════════════════════════════════════
+CONVERSATION 2: Follow-Up & Conversational Context
+═══════════════════════════════════════════════════════════════════════════════
+
+RULE-BASED CHATBOT:
+────────────────────────────────────────────────────────────────────────────────
+You: How much does shipping cost?
+Bot: Standard shipping (5-7 days): free over $50. Express (2-3 days): $9.99. International available.
+
+You: What about overnight?
+Bot: I'm not sure about that. Try asking about: hours, pricing, shipping, returns, or password reset.
+     ↑ FAILS: No "overnight" keyword in shipping FAQ
+
+
+LLM-POWERED CHATBOT:
+────────────────────────────────────────────────────────────────────────────────
+You: How much does shipping cost?
+Bot: We offer standard shipping (5-7 days) free on orders over $50, and express shipping (2-3 days) for $9.99. We also have international shipping available.
+
+You: What about overnight?
+Bot: We don't offer overnight shipping, but our express option gets your order there in 2-3 days for $9.99.
+     ↑ SUCCEEDS: Understood follow-up in context + made reasonable inference
+
+
+═══════════════════════════════════════════════════════════════════════════════
+CONVERSATION 3: Variations & Natural Language
+═══════════════════════════════════════════════════════════════════════════════
+
+RULE-BASED CHATBOT:
+────────────────────────────────────────────────────────────────────────────────
+You: Can I get my money back if I hate the product?
+Bot: 30-day money-back guarantee on all purchases. No questions asked. Contact support@example.com.
+
+You: Is there a warranty?
+Bot: I'm not sure about that. Try asking about: hours, pricing, shipping, returns, or password reset.
+     ↑ FAILS: "warranty" keyword not in FAQ
+
+
+You: I can't log in anymore
+Bot: Click 'Forgot Password' on login page. Check your email for reset link. Contact support if not received.
+     ↑ PARTIAL: Assumes password reset, but user might have other login issues
+
+
+LLM-POWERED CHATBOT:
+────────────────────────────────────────────────────────────────────────────────
+You: Can I get my money back if I hate the product?
+Bot: Yes! We offer a 30-day money-back guarantee with no questions asked. If you're not satisfied, just reach out to our support team.
+
+You: Is there a warranty?
+Bot: While we don't explicitly call it a warranty, our 30-day money-back guarantee means you have full coverage if something goes wrong.
+     ↑ SUCCEEDS: Answered related question not in FAQ
+
+
+You: I can't log in anymore
+Bot: I can help with that! If you've forgotten your password, click 'Forgot Password' on the login page and check your email for a reset link. If that doesn't work or you're having a different issue, contact our support team.
+     ↑ SUCCEEDS: Asked clarifying follow-up conceptually
+
+
+═══════════════════════════════════════════════════════════════════════════════
+CONVERSATION 4: Out-of-Domain Questions
+═══════════════════════════════════════════════════════════════════════════════
+
+RULE-BASED CHATBOT:
+────────────────────────────────────────────────────────────────────────────────
+You: What's the meaning of life?
+Bot: I'm not sure about that. Try asking about: hours, pricing, shipping, returns, or password reset.
+
+You: Do you ship to Canada?
+Bot: Standard shipping (5-7 days): free over $50. Express (2-3 days): $9.99. International available.
+     ↑ MISLEADING: Matched "ship" keyword but didn't understand "Canada" question specifically
+
+
+LLM-POWERED CHATBOT:
+────────────────────────────────────────────────────────────────────────────────
+You: What's the meaning of life?
+Bot: That's a philosophical question outside my area of expertise! I'm here to help with questions about our products, shipping, pricing, and customer support.
+
+You: Do you ship to Canada?
+Bot: Yes, we do offer international shipping including to Canada. For specific rates and delivery times to your area, please contact our support team.
+     ↑ SUCCEEDS: Specific answer + graceful handling of follow-up
+
+
+═══════════════════════════════════════════════════════════════════════════════
+KEY DIFFERENCES
+═══════════════════════════════════════════════════════════════════════════════
+
+RULE-BASED CHATBOT:
+  ✓ Simple, predictable, no API costs
+  ✗ Rigid - fails on slight wording variations
+  ✗ No context awareness - can't follow conversations
+  ✗ Can't handle unexpected questions gracefully
+  ✗ Requires manual FAQ updates for every scenario
+
+LLM-POWERED CHATBOT:
+  ✓ Flexible - understands natural language variations
+  ✓ Contextual - maintains conversation history
+  ✓ Graceful degradation - handles unexpected questions
+  ✓ Scales easily - adapts to new topics in system prompt
+  ✗ Requires API key and costs per query (typically $0.0005-$0.001/query)
+  ✗ Slightly slower (API latency vs instant lookup)
+
+================================================================================
