@@ -62,7 +62,7 @@ def get_faq_response(user_input: str) -> str:
 # LLM-POWERED CHATBOT
 # ============================================================================
 
-GROQ_MODEL = "deepseek-r1-distill-llama-70b"
+GROQ_MODEL = "llama-3.1-8b-instant"  # Fast, lightweight, always available
 
 SYSTEM_PROMPT = """You are a helpful customer support chatbot for an e-commerce company.
 You have knowledge about:
